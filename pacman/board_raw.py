@@ -27,6 +27,9 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 
+# total possible score for pacman to get in a single game
+total_score = tiles.count(1)
+
 ghosts = [
     [vector(-180, 160), vector(10, 0)],
     [vector(-180, -160), vector(0, 5)],

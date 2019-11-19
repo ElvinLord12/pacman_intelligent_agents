@@ -4,6 +4,7 @@ from random import choice
 from turtle import *
 from freegames import floor, vector
 from pacman.pacman_agents import PacmanRandom
+from pacman.board_raw import total_score as max_score
 
 
 class PacmanGame:
@@ -20,6 +21,9 @@ class PacmanGame:
         self.writer = Turtle(visible=False)
         self.aim = vector(0, -5)
         # self.going = self.pacman + self.aim
+
+        # added a is_finished parameter to use (for data collection purposes)
+        self.is_finished = False
 
     def build_board(self, x, y):  # replaces square function
         self.path.up()
@@ -70,7 +74,9 @@ class PacmanGame:
             self.build_board(x, y)
 
     def kill_pacman(self, pacman, point):
-        if abs(pacman - point) < 20:
+        # added an end state which should check if pacman has eaten all possible pellets
+        if abs(pacman - point) < 20 or self.state.get('score') == max_score:
+            self.is_finished = True
             return  # exit case
         else:
             pass
@@ -99,6 +105,7 @@ class PacmanGame:
             dot(20, 'red')
 
     def run_game(self):
+
         self.writer.undo()
         self.writer.write(self.state['score'])
 
@@ -124,7 +131,9 @@ class PacmanGame:
             if abs(self.pacman_object - ghost.agent) < 20:
                 return
 
-        ontimer(self.run_game, 100)  # loops make_moves at 80fps
+        # switched from ontimer to an if condition (for data collection purposes)
+        if not self.is_finished:
+            self.run_game()
 
     def game_setup(self):
         setup(420, 420, 370, 0)
@@ -141,4 +150,7 @@ class PacmanGame:
         onkey(lambda: self.move(0, -5), 'Down')
         self.draw_world()
         self.run_game()
-        done()
+        # added clearscreen() and resetscreen() for data collection (using done() throws some terminator exception)
+        clearscreen()
+        resetscreen()
+        # done()

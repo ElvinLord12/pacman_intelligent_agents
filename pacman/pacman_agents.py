@@ -53,10 +53,10 @@ class PacmanBetterRandom:
             self.choose_move()
             return self.direction
 
-
+    # commented out the print(moves) for data collection purposes
     def choose_move(self):
         moves = self.all_valid(vector(self.x, self.y))
-        print(moves)
+        # print(moves)
         self.direction = choice(moves)
 
 
