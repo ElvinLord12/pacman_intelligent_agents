@@ -1,6 +1,6 @@
 from pacman.pacman_game import PacmanGame
-from pacman.pacman_agents import PacmanRandom, PacmanBetterRandom
-from pacman.ghost_agents import GhostRandom
+from pacman.pacman_agents import PacmanRandom, PacmanBetterRandom, HumanPacman
+from pacman.ghost_agents import GhostRandom, GhostBetter
 from copy import deepcopy
 from pacman.board_raw import *
 from pacman.pacman_board import PacmanBoard
@@ -11,24 +11,35 @@ def collect_data(num_games=50):
     # defines the board
     board = PacmanBoard(deepcopy(tiles))
 
-    # defines the ghosts
-    ghost_1_position = vector(-180, -160)
-    ghost_1_direction = vector(10, 0)
-    ghost_1 = GhostRandom(ghost_1_position, ghost_1_direction, board)
+    pacman = PacmanRandom(position, direction, board)
+    pacmanBetter = PacmanBetterRandom(position, direction, board)
+    human = HumanPacman(position, direction, board)
+    
+    ghost = vector(-180,160)
+    ghost2 = vector(-180, -160)
+    ghost3 = vector(100, 160)
+    ghost4 = vector(100, -160)
+    ghostDir = vector(5, 0)
+    ghostDir1 = vector(0, 5)
+    ghostDir2 = vector(0, -5)
+    ghostDir3 = vector(-5, 0)
 
-    ghost_2_position = vector(100, 160)
-    ghost_2_direction = vector(-10, 0)
-    ghost_2 = GhostRandom(ghost_2_position, ghost_2_direction, board)
+    blinky = GhostBetter(ghost, ghostDir, board, pacman)
+    pinky = GhostBetter(ghost2, ghostDir1, board, pacman)
+    inky = GhostBetter(ghost3, ghostDir2, board, pacman)
+    clide = GhostBetter(ghost4, ghostDir3, board, pacman)
 
-    ghost_3_position = vector(100, -160)
-    ghost_3_direction = vector(0, 10)
-    ghost_3 = GhostRandom(ghost_3_position, ghost_3_direction, board)
+    bae = GhostRandom(ghost, ghostDir, board)
+    bae1 = GhostRandom(ghost2, ghostDir1, board)
+    bae2 = GhostRandom(ghost3, ghostDir2, board)
+    bae3 = GhostRandom(ghost4, ghostDir3, board)
 
-    ghost_4_position = vector(100, -140)
-    ghost_4_direction = vector(0, -10)
-    ghost_4 = GhostRandom(ghost_4_position, ghost_4_direction, board)
 
-    ghost_list = [ghost_1, ghost_2, ghost_3, ghost_4]
+    ghostz = [blinky, pinky, inky, clide]
+    badGhosts = [bae, bae1, bae2, bae3]
+
+    game = PacmanGame(board, deepcopy(human), deepcopy(ghostz))
+    game.game_setup()
 
     # defines the pacman
     pacman_position = vector(-40, -80)
